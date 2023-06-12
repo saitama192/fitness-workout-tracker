@@ -9,6 +9,8 @@ import com.fitness.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FitnessService {
     @Autowired
@@ -32,5 +34,7 @@ public class FitnessService {
     }
 
 
-
+    public List<ExerciseDetails> getExerciseDetails() {
+        return exerciseDetailsRepository.findAll();
+    }
 }
