@@ -1,6 +1,10 @@
 package com.fitness.demo.dto;
 
+import com.fitness.demo.model.ExerciseDao;
 import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -9,7 +13,8 @@ import lombok.*;
 @Getter
 @Setter
 public class WorkoutDetailsDto {
-    int Duration;
-    long UserId;
+    private Long id;
+    private LocalDateTime time;
+    private List<ExerciseDao> exerciseDaos;
 
 }

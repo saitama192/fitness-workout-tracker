@@ -1,20 +1,17 @@
-package com.fitness.demo.entity;
+package com.fitness.demo.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jdk.jfr.DataAmount;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class User {
+public class UserDao {
 
     @Id
     @GeneratedValue

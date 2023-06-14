@@ -1,8 +1,9 @@
 package com.fitness.demo.controller;
 
 import com.fitness.demo.dto.ExerciseDetailsDto;
-import com.fitness.demo.entity.Exercise;
-import com.fitness.demo.entity.ExerciseDetails;
+import com.fitness.demo.dto.ExerciseDto;
+import com.fitness.demo.model.ExerciseDetailsDao;
+import com.fitness.demo.model.WorkoutDao;
 import com.fitness.demo.service.FitnessService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +34,25 @@ public class FitnessController {
 //    }
 
     @PostMapping("exercisedetails/add")
-    public ResponseEntity<ExerciseDetails> addExerciseDetails(@RequestBody ExerciseDetailsDto exerciseDetailsDto)
+    public ResponseEntity<ExerciseDetailsDao> addExerciseDetails(@RequestBody ExerciseDetailsDto exerciseDetailsDto)
     {
         log.info("About to add Exercise Details");
-        ExerciseDetails newexerciseDetails = fitnessService.saveExerciseDetails(exerciseDetailsDto);
+        ExerciseDetailsDao newexerciseDetailsDao = fitnessService.saveExerciseDetails(exerciseDetailsDto);
         log.info("Adding Exercise Details");
-        return ResponseEntity.status(201).header(CONTENT_TYPE, APPLICATION_JSON).body(newexerciseDetails);
-        //Status code 201 signifies that request has succeeded and has led to the creation of a resource
+        return ResponseEntity.status(201).header(CONTENT_TYPE, APPLICATION_JSON).body(newexerciseDetailsDao);
+        //Status code 201 signifies that request has succeeded and git chas led to the creation of a resource
     }
     @GetMapping("exercisedetails/alldetails")
-    public ResponseEntity<List<ExerciseDetails>> getAllExerciseDetails(){
+    public ResponseEntity<List<ExerciseDetailsDao>> getAllExerciseDetails(){
         log.info("About to get Exercise Details");
-        List<ExerciseDetails> exerciseDetails = fitnessService.getExerciseDetails();
-        return ResponseEntity.status(200).header(CONTENT_TYPE, APPLICATION_JSON).body(exerciseDetails);
+        List<ExerciseDetailsDao> exerciseDetailDaos = fitnessService.getExerciseDetails();
+        return ResponseEntity.status(200).header(CONTENT_TYPE, APPLICATION_JSON).body(exerciseDetailDaos);
+    }
+
+    @PostMapping("workout/addworkout")
+    public ResponseEntity<WorkoutDao> addWorkout(@RequestBody List<ExerciseDto> exercises){
+        log.info("About to add workout");
+        WorkoutDao workoutDao = fitnessService.saveWorkout(exercises);
+        return ResponseEntity.status(201).header(CONTENT_TYPE, APPLICATION_JSON).body(workoutDao);
     }
 }
