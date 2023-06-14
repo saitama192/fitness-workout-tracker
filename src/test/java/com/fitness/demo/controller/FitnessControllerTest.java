@@ -2,7 +2,7 @@ package com.fitness.demo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fitness.demo.dto.ExerciseDetailsDto;
-import com.fitness.demo.entity.ExerciseDetails;
+import com.fitness.demo.model.ExerciseDetailsDao;
 import com.fitness.demo.service.FitnessService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -17,10 +17,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -38,13 +36,13 @@ class FitnessControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private ExerciseDetails exerciseDetails;
+    private ExerciseDetailsDao exerciseDetailsDao;
     private ExerciseDetailsDto exerciseDetailsDto;
 
     @BeforeEach
     public void init(){
         exerciseDetailsDto = ExerciseDetailsDto.builder().name("Bench Press").primaryMuscle("Chest").secondaryMuscle("Triceps").build();
-        exerciseDetails = ExerciseDetails.builder().name("Bench Press").primaryMuscle("Chest").secondaryMuscle("Triceps").id(2l).build();
+        exerciseDetailsDao = ExerciseDetailsDao.builder().name("Bench Press").primaryMuscle("Chest").secondaryMuscle("Triceps").id(2l).build();
     }
     @Disabled
     @Test
@@ -53,7 +51,7 @@ class FitnessControllerTest {
 
     @Test
     void addExerciseDetailsSuccessTest() throws Exception {
-        given(fitnessService.saveExerciseDetails(ArgumentMatchers.any())).willReturn(exerciseDetails);
+        given(fitnessService.saveExerciseDetails(ArgumentMatchers.any())).willReturn(exerciseDetailsDao);
         ResultActions response = mockMvc.perform(post("/api/v1/exercisedetails/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(exerciseDetailsDto)));
