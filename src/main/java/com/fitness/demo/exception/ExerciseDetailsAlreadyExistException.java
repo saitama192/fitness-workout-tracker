@@ -5,6 +5,7 @@ public class ExerciseDetailsAlreadyExistException extends RuntimeException{
         super(message);
     }
 
+
     public ExerciseDetailsAlreadyExistException(String message, Throwable cause) {
         super(message, cause);
     }

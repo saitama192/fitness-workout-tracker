@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 
 @ControllerAdvice
 public class AuthExceptionHandler {
-    @ExceptionHandler(value = {ExerciseDetailsAlreadyExistException.class})
+    @ExceptionHandler(value = {ExerciseDetailsAlreadyExistException.class, WorkoutDoesNotExistsException.class})
     public ResponseEntity<Object> handleApiRequestException(Exception e){
         //Create payload containing exception details
         ApiException apiException = new ApiException(

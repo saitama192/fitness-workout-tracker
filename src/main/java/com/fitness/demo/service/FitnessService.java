@@ -2,6 +2,7 @@ package com.fitness.demo.service;
 
 import com.fitness.demo.dto.ExerciseDetailsDto;
 import com.fitness.demo.dto.ExerciseDto;
+import com.fitness.demo.exception.WorkoutDoesNotExistsException;
 import com.fitness.demo.model.ExerciseDao;
 import com.fitness.demo.model.ExerciseDetailsDao;
 import com.fitness.demo.model.WorkoutDao;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,5 +65,32 @@ public class FitnessService {
                         .build())
                 .collect(Collectors.toList());
     }
+    public String deleteWorkout(Long id){
+    workoutRepository.deleteById(id);
+    return ("Workout" +id+" Record Deleted");
+    }
 
+    public WorkoutDao findWorkout(Long id){
+        Optional<WorkoutDao> workoutDaoOptional= workoutRepository.findById(id);
+        if(workoutDaoOptional.isPresent()){
+            return workoutDaoOptional.get();
+        }
+        else{
+            throw new WorkoutDoesNotExistsException("Workout does not exist");
+        }
+    }
+
+    public WorkoutDao updateWorkout(Long workoutId, WorkoutDao updatedWorkout) {
+        WorkoutDao existingWorkout = workoutRepository.findById(workoutId)
+                .orElseThrow(() -> new WorkoutDoesNotExistsException("Workout not found"));
+
+        existingWorkout.setTime(updatedWorkout.getTime());
+        existingWorkout.setExerciseDaos(updatedWorkout.getExerciseDaos());
+
+        return workoutRepository.save(existingWorkout);
+    }
+
+    public List<WorkoutDao> getWorkouts(LocalDateTime date1, LocalDateTime date2){
+        return workoutRepository.findByTimeBetween(date1, date2);
+    }
 }
