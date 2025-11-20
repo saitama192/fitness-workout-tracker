@@ -31,51 +31,50 @@ public class FitnessService {
     private WorkoutRepository workoutRepository;
 
     public ExerciseDetailsDao saveExerciseDetails(ExerciseDetailsDto exerciseDetailsDto) {
-        ExerciseDetailsDao newExerciseDetailsDao = ExerciseDetailsDao.builder().name(exerciseDetailsDto.getName())
-                .primaryMuscle(exerciseDetailsDto.getPrimaryMuscle())
-                .secondaryMuscle(exerciseDetailsDto.getSecondaryMuscle())
+        ExerciseDetailsDao newExerciseDetailsDao = ExerciseDetailsDao.builder().name(exerciseDetailsDto.name())
+                .primaryMuscle(exerciseDetailsDto.primaryMuscle())
+                .secondaryMuscle(exerciseDetailsDto.secondaryMuscle())
                 .build();
-        try{
-        return exerciseDetailsRepository.save(newExerciseDetailsDao);
-        }
-        catch (Exception e){
+        try {
+            return exerciseDetailsRepository.save(newExerciseDetailsDao);
+        } catch (Exception e) {
             throw new ExerciseDetailsAlreadyExistException("The exercise already exists");
         }
     }
-
 
     public List<ExerciseDetailsDao> getExerciseDetails() {
         return exerciseDetailsRepository.findAll();
     }
 
-    //in Progress
+    // in Progress
     public WorkoutDao saveWorkout(List<ExerciseDto> exerciseDtos) {
-        //convert exercisedtos to dao and then pass for saving
+        // convert exercisedtos to dao and then pass for saving
         List<ExerciseDao> exerciseDaos = exerciseDaoBuilder(exerciseDtos);
         WorkoutDao workoutDao = WorkoutDao.builder().time(LocalDateTime.now()).exerciseDaos(exerciseDaos).build();
         return workoutRepository.save(workoutDao);
     }
-    private List<ExerciseDao> exerciseDaoBuilder(List<ExerciseDto> exerciseDtos){
+
+    private List<ExerciseDao> exerciseDaoBuilder(List<ExerciseDto> exerciseDtos) {
         return exerciseDtos.stream()
                 .map(exerciseDto -> ExerciseDao.builder()
-                        .name(exerciseDto.getName())
-                        .reps(exerciseDto.getReps())
-                        .weightMax(exerciseDto.getWeightMax())
-                        .weightMin(exerciseDto.getWeightMin())
+                        .name(exerciseDto.name())
+                        .reps(exerciseDto.reps())
+                        .weightMax(exerciseDto.weightMax())
+                        .weightMin(exerciseDto.weightMin())
                         .build())
                 .collect(Collectors.toList());
     }
-    public String deleteWorkout(Long id){
-    workoutRepository.deleteById(id);
-    return ("Workout" +id+" Record Deleted");
+
+    public String deleteWorkout(Long id) {
+        workoutRepository.deleteById(id);
+        return ("Workout" + id + " Record Deleted");
     }
 
-    public WorkoutDao findWorkout(Long id){
-        Optional<WorkoutDao> workoutDaoOptional= workoutRepository.findById(id);
-        if(workoutDaoOptional.isPresent()){
+    public WorkoutDao findWorkout(Long id) {
+        Optional<WorkoutDao> workoutDaoOptional = workoutRepository.findById(id);
+        if (workoutDaoOptional.isPresent()) {
             return workoutDaoOptional.get();
-        }
-        else{
+        } else {
             throw new WorkoutDoesNotExistsException("Workout does not exist");
         }
     }
@@ -90,7 +89,7 @@ public class FitnessService {
         return workoutRepository.save(existingWorkout);
     }
 
-    public List<WorkoutDao> getWorkouts(LocalDateTime date1, LocalDateTime date2){
+    public List<WorkoutDao> getWorkouts(LocalDateTime date1, LocalDateTime date2) {
         return workoutRepository.findByTimeBetween(date1, date2);
     }
 }

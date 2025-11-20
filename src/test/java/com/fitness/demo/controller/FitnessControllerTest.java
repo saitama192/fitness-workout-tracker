@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @WebMvcTest(controllers = FitnessController.class)
 @AutoConfigureMockMvc
-@ExtendWith(MockitoExtension.class )
+@ExtendWith(MockitoExtension.class)
 class FitnessControllerTest {
 
     @Autowired
@@ -40,10 +40,12 @@ class FitnessControllerTest {
     private ExerciseDetailsDto exerciseDetailsDto;
 
     @BeforeEach
-    public void init(){
-        exerciseDetailsDto = ExerciseDetailsDto.builder().name("Bench Press").primaryMuscle("Chest").secondaryMuscle("Triceps").build();
-        exerciseDetailsDao = ExerciseDetailsDao.builder().name("Bench Press").primaryMuscle("Chest").secondaryMuscle("Triceps").id(2l).build();
+    public void init() {
+        exerciseDetailsDto = new ExerciseDetailsDto("Bench Press", "Chest", "Triceps");
+        exerciseDetailsDao = ExerciseDetailsDao.builder().name("Bench Press").primaryMuscle("Chest")
+                .secondaryMuscle("Triceps").id(2l).build();
     }
+
     @Disabled
     @Test
     void addWorkout() {

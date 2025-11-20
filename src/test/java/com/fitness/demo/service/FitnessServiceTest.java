@@ -29,20 +29,17 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class FitnessServiceTest {
-@Mock
-private WorkoutRepository workoutRepository;
-@Mock
-private ExerciseDetailsRepository exerciseDetailsRepository;
+    @Mock
+    private WorkoutRepository workoutRepository;
+    @Mock
+    private ExerciseDetailsRepository exerciseDetailsRepository;
 
-@InjectMocks
-private FitnessService fitnessService;
+    @InjectMocks
+    private FitnessService fitnessService;
 
     @Test
     public void testSaveExerciseDetails_Success() {
-        ExerciseDetailsDto exerciseDetailsDto = new ExerciseDetailsDto();
-        exerciseDetailsDto.setName("Push-ups");
-        exerciseDetailsDto.setPrimaryMuscle("Chest");
-        exerciseDetailsDto.setSecondaryMuscle("Triceps");
+        ExerciseDetailsDto exerciseDetailsDto = new ExerciseDetailsDto("Push-ups", "Chest", "Triceps");
 
         ExerciseDetailsDao savedExerciseDetails = new ExerciseDetailsDao();
         savedExerciseDetails.setId(1L);
@@ -96,8 +93,7 @@ private FitnessService fitnessService;
                         .reps(10)
                         .weightMin(0)
                         .weightMax(0)
-                        .build()
-        );
+                        .build());
 
         WorkoutDao savedWorkout = new WorkoutDao();
         savedWorkout.setId(1L);
@@ -186,6 +182,7 @@ private FitnessService fitnessService;
         assertEquals(updatedWorkout.getExerciseDaos(), result.getExerciseDaos());
 
     }
+
     @Test
     public void testGetWorkouts_Success() {
         LocalDateTime date1 = LocalDateTime.of(2023, 6, 1, 0, 0, 0);
